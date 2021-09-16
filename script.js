@@ -53,25 +53,25 @@ const renderCountry = function (data, className = "") {
   countriesContainer.style.opacity = 1;
 }
 
-const getCountryAndNeighbour = (country) => {
-  const request = new XMLHttpRequest();
-  request.open("GET", `https://restcountries.eu/rest/v2/name/${country}`);
-  request.send();
-  request.addEventListener("load", function () {
-    const [data] = JSON.parse(this.responseText);
-    renderCountry(data);
-    const [neighbour] = data.borders;
-    const request2 = new XMLHttpRequest();
-    request2.open("GET", `https://restcountries.eu/rest/v2/alpha/${neighbour}`);
-    request2.send();
-    request2.addEventListener("load", function () {
-      const data1 = JSON.parse(this.responseText);
-      renderCountry(data1, "neighbour");
-    });
-  });
-};
+// const getCountryAndNeighbour = (country) => {
+//   const request = new XMLHttpRequest();
+//   request.open("GET", `https://restcountries.eu/rest/v2/name/${country}`);
+//   request.send();
+//   request.addEventListener("load", function () {
+//     const [data] = JSON.parse(this.responseText);
+//     renderCountry(data);
+//     const [neighbour] = data.borders;
+//     const request2 = new XMLHttpRequest();
+//     request2.open("GET", `https://restcountries.eu/rest/v2/alpha/${neighbour}`);
+//     request2.send();
+//     request2.addEventListener("load", function () {
+//       const data1 = JSON.parse(this.responseText);
+//       renderCountry(data1, "neighbour");
+//     });
+//   });
+// };
 
-getCountryAndNeighbour("pakistan");
+// getCountryAndNeighbour("pakistan");
 
 // Call Back Hell
 
@@ -111,3 +111,12 @@ getCountryAndNeighbour("pakistan");
 //     }, 1000);
 //   }, 1000);
 // }, 1000);
+
+
+const getCountryData = (country) => {
+  fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+    .then((respone) => respone.json())
+    .then((data) => renderCountry(data[0]));
+};
+
+getCountryData("pakistan");

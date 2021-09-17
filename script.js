@@ -113,10 +113,27 @@ const renderCountry = function (data, className = "") {
 // }, 1000);
 
 
+// const getCountryData = (country) => {
+//   fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+//     .then((respone) => respone.json())
+//     .then((data) => renderCountry(data[0]));
+// };
+
+// getCountryData("pakistan");
+
+
+//chaining Promises
 const getCountryData = (country) => {
   fetch(`https://restcountries.eu/rest/v2/name/${country}`)
     .then((respone) => respone.json())
-    .then((data) => renderCountry(data[0]));
+    .then((data) => {
+      renderCountry(data[0]);
+      const neighbour = data[0].borders[0];
+      if (!neighbour) return;
+      return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbour}`)
+    }).then(response => {
+      return response.json();
+    }).then(data => renderCountry(data, "neighbour"));
 };
 
 getCountryData("pakistan");
